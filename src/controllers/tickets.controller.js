@@ -2,7 +2,6 @@ const {
   createNewIntervention,
 } = require("../models/ticket.model/createNewIntervention");
 const createTicket = require("../models/ticket.model/createTicket");
-const getClientTicket = require("../models/ticket.model/getClientTicket");
 const { getTicketDetails } = require("../models/ticket.model/getTicketDetails");
 const {
   getTickets,
@@ -12,7 +11,6 @@ const {
   getTicketsStatutsList,
 } = require("../models/ticket.model/getTicketStatutsList");
 const { getPagination } = require("../services/queryService");
-const { testNewInterventionData } = require("../services/ticketsService");
 const {
   regexNumber,
   badQuery,
@@ -147,20 +145,10 @@ async function httpCreateTicket(req, res) {
   }
 }
 
-async function httpGetClientTickets(req, res) {
-  try {
-    const tickets = await getClientTicket(2);
-    return res.status(200).json(tickets);
-  } catch (error) {
-    return res.status(500).json({ message: serverIssue + error });
-  }
-}
-
 module.exports = {
   httpGetTickets,
   httpGetTicketDetails,
   httpGetTicketStatutsList,
   httpCreateIntervention,
   httpCreateTicket,
-  httpGetClientTickets,
 };

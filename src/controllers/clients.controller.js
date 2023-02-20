@@ -6,6 +6,7 @@ const {
   getClientByContrat,
   getClientByNom,
 } = require("../models/client.model/getClientDetails");
+const getClientTickets = require("../models/client.model/getClientTickets");
 const { getPagination } = require("../services/queryService");
 const {
   regexGeneric,
@@ -36,7 +37,6 @@ async function httpGetAllClients(req, res) {
 async function httpSearchClient(req, res) {
   const type = req.query.type;
   const value = req.query.value;
-  console.log(type, value);
   if (
     !type ||
     !regexGeneric.test(type) ||
@@ -67,4 +67,20 @@ async function httpSearchClient(req, res) {
   }
 }
 
-module.exports = { httpSearchClient, httpGetAllClients };
+async function httpGetClientTickets(req, res) {
+  const clientId = req.params.id;
+  if (!clientId || !regexNumber.test(clientId)) {
+    return res.status(400).json({ message: badQuery });
+  }
+  try {
+    const tickets = await getClientTickets(clientId);
+    if (!tickets) {
+      return res.status(404).json({ message: noData });
+    }
+    return res.status(200).json(tickets);
+  } catch (err) {
+    return res.status(500).json({ message: serverIssue + err });
+  }
+}
+
+module.exports = { httpSearchClient, httpGetAllClients, httpGetClientTickets };

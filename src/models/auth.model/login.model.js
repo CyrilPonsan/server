@@ -9,7 +9,6 @@ async function login(username, password) {
   if (!user) {
     return false;
   }
-  console.log(username, password);
   const isValid = await bcrypt.compare(password, user.password);
   return {
     isValid,

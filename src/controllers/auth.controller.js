@@ -9,8 +9,8 @@ const {
   noAccess,
 } = require("../utils/data");
 
-const accessTimeLife = "15m";
-const refreshTimeLife = "1h";
+const accessTimeLife = "10h";
+const refreshTimeLife = "1d";
 
 //  authentification de l'utilisateur
 async function httpLogin(req, res) {
@@ -30,7 +30,14 @@ async function httpLogin(req, res) {
     }
     if (user.roles.includes("tech") || user.roles.includes("admin")) {
       return res.status(200).json({
-        user,
+        user: {
+          username: user.username,
+          id: user.id,
+          nom: user.nom,
+          prenom: user.prenom,
+          roles: user.roles,
+          createdAt: user.createdAt,
+        },
         accessToken: _getToken(user, accessTimeLife),
         refreshToken: _getToken(user, refreshTimeLife),
       });
@@ -50,11 +57,15 @@ function httpGenerateNewTokens(req, res) {
   }
   try {
     const decodedToken = jwt.verify(refreshToken, process.env.PRIVATE_KEY);
-    if (user.roles.includes("tech") || user.roles.includes("admin")) {
+    if (
+      decodedToken.roles.includes("tech") ||
+      decodedToken.roles.includes("admin")
+    ) {
       const user = {
         id: decodedToken.id,
         roles: decodedToken.roles,
       };
+      console.log("user", user);
       return res.status(200).json({
         accessToken: _getToken(user, accessTimeLife),
         refreshToken: _getToken(user, refreshTimeLife),
