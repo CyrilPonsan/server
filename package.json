@@ -1,0 +1,35 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "API pour l'application d'atelier",
+  "main": "server.js",
+  "scripts": {
+    "start": "NODE_ENV=production node src/server.js",
+    "test": "jest",
+    "test-watch": "jest --watch",
+    "watch": "NODE_ENV=development nodemon src/server.js",
+    "prod": "env-cmd -f ./env.env.prod",
+    "cluster": "NODE_ENV=production pm2 start src/app.js -i max",
+    "deploy-cluster": "npm run build --prefix client && npm run cluster --prefix server"
+  },
+  "author": "team rondoudou",
+  "license": "ISC",
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mariadb": "^3.0.2",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.1.0",
+    "sequelize": "^6.28.0"
+  },
+  "devDependencies": {
+    "jest": "^29.3.1",
+    "supertest": "^6.3.3"
+  }
+}
