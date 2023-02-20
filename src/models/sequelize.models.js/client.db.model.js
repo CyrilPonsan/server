@@ -11,7 +11,7 @@ function clientModel(sequelize, DataTypes) {
         allownull: false,
       },
       contrat: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allownull: false,
       },
       telephone: {
@@ -30,14 +30,14 @@ function clientModel(sequelize, DataTypes) {
         type: DataTypes.STRING,
         allownull: false,
       },
-    },
-    {
+    }
+    /*   {
       hooks: {
         beforeCreate: function (user) {
           user.fonction = user.fonction.toLowerCase();
         },
       },
-    }
+    } */
   );
 }
 

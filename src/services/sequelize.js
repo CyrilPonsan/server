@@ -69,7 +69,7 @@ const TypeMateriel = TypeMaterielModel(sequelize, DataTypes);
  * une intervention ne peut être associée qu'à un
  * seul ticket
  */
-Ticket.hasMany(Intervention, { as: "intervention" });
+Ticket.hasMany(Intervention, { as: "intervention", onDelete: "CASCADE" });
 Intervention.belongsTo(Ticket, { as: "ticket" });
 
 /**
@@ -77,10 +77,10 @@ Intervention.belongsTo(Ticket, { as: "ticket" });
  * un materiel peut avoir plusieurs tickets
  * un ticket n'est rattaché qu'à un seul materiel
  */
-Materiel.hasMany(Ticket, { as: "ticket" });
+Materiel.hasMany(Ticket, { as: "ticket", onDelete: "CASCADE" });
 Ticket.belongsTo(Materiel, { as: "materiel" });
 
-Client.hasMany(Ticket, { as: "ticket" });
+Client.hasMany(Ticket, { as: "ticket", onDelete: "CASCADE" });
 Ticket.belongsTo(Client, { as: "client" });
 
 /**
@@ -88,7 +88,7 @@ Ticket.belongsTo(Client, { as: "client" });
  * un client peut avoir plusieurs materiel
  * un materiel n'est rattaché qu'à un seul client
  */
-Client.hasMany(Materiel, { as: "materiel" });
+Client.hasMany(Materiel, { as: "materiel", onDelete: "CASCADE" });
 Materiel.belongsTo(Client, { as: "client" });
 
 /**

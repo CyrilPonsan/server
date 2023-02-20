@@ -1,3 +1,4 @@
+const deleteClient = require("../models/client.model/deleteClient");
 const {
   getAllClients,
   getTotalClients,
@@ -83,4 +84,28 @@ async function httpGetClientTickets(req, res) {
   }
 }
 
-module.exports = { httpSearchClient, httpGetAllClients, httpGetClientTickets };
+async function httpDeleteClient(req, res) {
+  const clientId = req.params.id;
+  if (!clientId || !regexNumber.test(clientId)) {
+    return res.status(400).json({ message: badQuery });
+  }
+  try {
+    await deleteClient(clientId);
+    return res.status(200).json({
+      message: `Le client avec l'identifiant: ${clientId} a été supprimé de la bddd.`,
+    });
+  } catch (err) {
+    return res.status(500).json({ message: serverIssue + err });
+  }
+}
+
+async function httpUpdateClient(req, res) {
+  const clientId = req.params.id;
+}
+
+module.exports = {
+  httpSearchClient,
+  httpGetAllClients,
+  httpGetClientTickets,
+  httpDeleteClient,
+};
