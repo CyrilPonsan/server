@@ -1,19 +1,19 @@
 const {
   getAllClients,
   getTotalClients,
-} = require("../../models/client.model/getAllClients");
+} = require("../models/client.model/getAllClients");
 const {
   getClientByContrat,
   getClientByNom,
-} = require("../../models/client.model/getClientDetails");
-const { getPagination } = require("../../services/queryService");
+} = require("../models/client.model/getClientDetails");
+const { getPagination } = require("../services/queryService");
 const {
   regexGeneric,
   regexNumber,
   badQuery,
   serverIssue,
   noData,
-} = require("../../utils/data");
+} = require("../utils/data");
 
 async function httpGetAllClients(req, res) {
   const { page, lmt } = req.query;

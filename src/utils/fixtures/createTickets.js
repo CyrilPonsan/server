@@ -11,13 +11,13 @@ async function createTickets() {
   let ref = 5000;
   const tickets = [];
   for (let i = 1; i <= 25; i++) {
-    const materiel_id = _setRandomNumber(1, 1500);
+    const materielId = _setRandomNumber(1, 1500);
     tickets.push({
       ref: ref,
-      materiel_id: materiel_id,
+      materielId: materielId,
       titre: "en panne",
       resume: "lorem lorem",
-      client_id: materiels.find((m) => m.id === materiel_id).client_id,
+      clientId: materiels.find((m) => m.id === materielId).clientId,
     });
     ref++;
   }
@@ -31,22 +31,22 @@ async function createTickets() {
       reponse:
         "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Excepturi, eaque facere? Ab necessitatibus ducimus vel quod eaque quis excepturi natus reiciendis id nam ea nobis nostrum magni voluptatum, iste alias ratione accusantium delectus.",
 
-      ticket_id: i,
-      statut_id: 1,
-      conseiller_id: 1,
+      ticketId: i,
+      statutId: 1,
+      conseillerId: 1,
       titre: "depannage 1",
       lieuIntervention: "distance",
     });
     interventions.push({
       date: _addDays(date, day++),
-      ticket_id: i,
+      ticketId: i,
       description:
         "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Excepturi, eaque facere? Ab necessitatibus ducimus vel quod eaque quis excepturi natus reiciendis id nam ea nobis nostrum magni voluptatum, iste alias ratione accusantium delectus.",
       reponse:
         "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Excepturi, eaque facere? Ab necessitatibus ducimus vel quod eaque quis excepturi natus reiciendis id nam ea nobis nostrum magni voluptatum, iste alias ratione accusantium delectus.",
 
-      statut_id: 2,
-      conseiller_id: 1,
+      statutId: 2,
+      conseillerId: 1,
       titre: "depannage 2",
       lieuIntervention: "distance",
     });
@@ -57,9 +57,9 @@ async function createTickets() {
       reponse:
         "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Excepturi, eaque facere? Ab necessitatibus ducimus vel quod eaque quis excepturi natus reiciendis id nam ea nobis nostrum magni voluptatum, iste alias ratione accusantium delectus.",
 
-      ticket_id: i,
-      statut_id: 4,
-      conseiller_id: 1,
+      ticketId: i,
+      statutId: 4,
+      conseillerId: 1,
       titre: "depannage 3",
       lieuIntervention: "distance",
     });
@@ -70,9 +70,9 @@ async function createTickets() {
       reponse:
         "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Excepturi, eaque facere? Ab necessitatibus ducimus vel quod eaque quis excepturi natus reiciendis id nam ea nobis nostrum magni voluptatum, iste alias ratione accusantium delectus.",
 
-      ticket_id: i,
-      statut_id: 5,
-      conseiller_id: 2,
+      ticketId: i,
+      statutId: 5,
+      conseillerId: 2,
       lieuIntervention: "distance",
       titre: "depannage 4",
     });

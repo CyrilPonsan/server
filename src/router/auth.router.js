@@ -1,6 +1,9 @@
 const express = require("express");
 
-const { httpLogin, httpGenerateNewTokens } = require("./auth.controller");
+const {
+  httpLogin,
+  httpGenerateNewTokens,
+} = require("../controllers/auth.controller");
 
 const authRouter = express.Router();
 

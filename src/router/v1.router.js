@@ -1,7 +1,7 @@
 const express = require("express");
-const authRouter = require("./auth.router/auth.router");
-const clientsRouter = require("./clients.router/clients.router");
-const ticketsRouter = require("./tickets.router/tickets.router");
+const authRouter = require("./auth.router");
+const clientsRouter = require("./clients.router");
+const ticketsRouter = require("./tickets.router");
 
 const api = express.Router();
 

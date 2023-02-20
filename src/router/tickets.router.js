@@ -1,5 +1,5 @@
 const express = require("express");
-const { hasAccess } = require("../../middlewares/auth.middleware");
+const { hasAccess } = require("../middlewares/auth.middleware");
 const {
   httpGetTickets,
   httpGetTicketDetails,
@@ -7,7 +7,7 @@ const {
   httpCreateIntervention,
   httpCreateTicket,
   httpGetClientTickets,
-} = require("./tickets.controller");
+} = require("../controllers/tickets.controller");
 
 const ticketsRouter = express.Router();
 

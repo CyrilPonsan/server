@@ -4,7 +4,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 
 const { initDB } = require("./services/sequelize");
-const api = require("./routes/v1.router");
+const api = require("./router/v1.router");
 
 const app = express();
 

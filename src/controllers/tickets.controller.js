@@ -1,27 +1,25 @@
 const {
   createNewIntervention,
-} = require("../../models/ticket.model/createNewIntervention");
-const createTicket = require("../../models/ticket.model/createTicket");
-const getClientTicket = require("../../models/ticket.model/getClientTicket");
-const {
-  getTicketDetails,
-} = require("../../models/ticket.model/getTicketDetails");
+} = require("../models/ticket.model/createNewIntervention");
+const createTicket = require("../models/ticket.model/createTicket");
+const getClientTicket = require("../models/ticket.model/getClientTicket");
+const { getTicketDetails } = require("../models/ticket.model/getTicketDetails");
 const {
   getTickets,
   getTotalTickets,
-} = require("../../models/ticket.model/getTickets");
+} = require("../models/ticket.model/getTickets");
 const {
   getTicketsStatutsList,
-} = require("../../models/ticket.model/getTicketStatutsList");
-const { getPagination } = require("../../services/queryService");
-const { testNewInterventionData } = require("../../services/ticketsService");
+} = require("../models/ticket.model/getTicketStatutsList");
+const { getPagination } = require("../services/queryService");
+const { testNewInterventionData } = require("../services/ticketsService");
 const {
   regexNumber,
   badQuery,
   serverIssue,
   noData,
   regexGeneric,
-} = require("../../utils/data");
+} = require("../utils/data");
 
 async function httpGetTickets(req, res) {
   const userId = req.auth.userId;

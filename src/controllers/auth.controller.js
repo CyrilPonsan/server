@@ -1,13 +1,13 @@
 const jwt = require("jsonwebtoken");
 
-const { login } = require("../../models/auth.model/login.model");
+const { login } = require("../models/auth.model/login.model");
 const {
   regexMail,
   regexPassword,
   credentialsError,
   serverIssue,
   noAccess,
-} = require("../../utils/data");
+} = require("../utils/data");
 
 const accessTimeLife = "15m";
 const refreshTimeLife = "1h";

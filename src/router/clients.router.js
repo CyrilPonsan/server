@@ -1,6 +1,9 @@
 const express = require("express");
-const { hasAccess } = require("../../middlewares/auth.middleware");
-const { httpSearchClient, httpGetAllClients } = require("./clients.controller");
+const { hasAccess } = require("../middlewares/auth.middleware");
+const {
+  httpSearchClient,
+  httpGetAllClients,
+} = require("../controllers/clients.controller");
 
 const clientsRouter = express.Router();
 

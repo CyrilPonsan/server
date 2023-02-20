@@ -64,7 +64,7 @@ async function getTickets(offset, limit) {
       [sequelize.fn("MAX", sequelize.col("code")), "code"],
       [sequelize.fn("MAX", sequelize.col("date")), "date"],
     ],
-    group: ["intervention.ticket_id"],
+    group: ["intervention.ticketId"],
     order: [["date", "DESC"]],
     offset: offset,
     limit: limit,
