@@ -29,6 +29,8 @@ async function httpLogin(req, res) {
       return res.status(400).json({ credentialsError });
     }
     if (user.roles.includes("tech") || user.roles.includes("admin")) {
+      req.session.userId = user.id;
+      req.session.roles = user.roles;
       return res.status(200).json({
         user: {
           username: user.username,
@@ -38,8 +40,8 @@ async function httpLogin(req, res) {
           roles: user.roles,
           createdAt: user.createdAt,
         },
-        accessToken: _getToken(user, accessTimeLife),
-        refreshToken: _getToken(user, refreshTimeLife),
+        //accessToken: _getToken(user, accessTimeLife),
+        //refreshToken: _getToken(user, refreshTimeLife),
       });
     } else {
       return res.status(403).json({ noAccess });
@@ -47,6 +49,13 @@ async function httpLogin(req, res) {
   } catch (error) {
     return res.status(500).json({ error: serverIssue + error });
   }
+}
+
+function httpLogout(req, res) {
+  req.session.destroy((err) => {
+    console.log(err);
+  });
+  return res.status(200).json({ message: "logged out" });
 }
 
 //  retourne des tokens tout neufs
@@ -90,4 +99,4 @@ const _getToken = (user, timeLife) => {
   );
 };
 
-module.exports = { httpLogin, httpGenerateNewTokens };
+module.exports = { httpLogin, httpLogout };

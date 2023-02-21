@@ -2,7 +2,8 @@ const express = require("express");
 
 const {
   httpLogin,
-  httpGenerateNewTokens,
+  httpLogout,
+  //httpGenerateNewTokens,
 } = require("../controllers/auth.controller");
 
 const authRouter = express.Router();
@@ -11,6 +12,8 @@ const authRouter = express.Router();
 authRouter.post("/", httpLogin);
 
 //  rafraîchissement des tokens
-authRouter.post("/refresh-tokens", httpGenerateNewTokens);
+//authRouter.post("/refresh-tokens", httpGenerateNewTokens);
+
+authRouter.get("/logout", httpLogout);
 
 module.exports = authRouter;
