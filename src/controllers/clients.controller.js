@@ -8,6 +8,8 @@ const {
   getClientByNom,
 } = require("../models/client.model/getClientDetails");
 const getClientTickets = require("../models/client.model/getClientTickets");
+const updateClient = require("../models/client.model/updateClient");
+const { checkUpdateClient } = require("../services/checkData");
 const { getPagination } = require("../services/queryService");
 const {
   regexGeneric,
@@ -101,6 +103,24 @@ async function httpDeleteClient(req, res) {
 
 async function httpUpdateClient(req, res) {
   const clientId = req.params.id;
+  const clientToUpdate = req.body;
+  if (
+    checkUpdateClient(clientToUpdate) ||
+    !clientId ||
+    !regexNumber.test(clientId)
+  ) {
+    return res.status(400).json({ message: badQuery });
+  }
+  try {
+    const updatedClient = await updateClient(clientId, clientToUpdate);
+    if (updatedClient) {
+      return res.status(201).json({
+        message: `Le client avec l'identifiant: ${clientId} a été mis à jour avec succès.`,
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: serverIssue + err });
+  }
 }
 
 module.exports = {
@@ -108,4 +128,5 @@ module.exports = {
   httpGetAllClients,
   httpGetClientTickets,
   httpDeleteClient,
+  httpUpdateClient,
 };
