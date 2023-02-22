@@ -8,8 +8,9 @@ const {
   getClientByNom,
 } = require("../models/client.model/getClientDetails");
 const getClientTickets = require("../models/client.model/getClientTickets");
+const { getRaisonsSociales } = require("../models/client.model/raisonSociales");
 const updateClient = require("../models/client.model/updateClient");
-const { checkUpdateClient } = require("../services/checkData");
+const { checkUpdateCreateClient } = require("../services/checkData");
 const { getPagination } = require("../services/queryService");
 const {
   regexGeneric,
@@ -105,7 +106,7 @@ async function httpUpdateClient(req, res) {
   const clientId = req.params.id;
   const clientToUpdate = req.body;
   if (
-    checkUpdateClient(clientToUpdate) ||
+    checkUpdateCreateClient(clientToUpdate) ||
     !clientId ||
     !regexNumber.test(clientId)
   ) {
@@ -123,10 +124,26 @@ async function httpUpdateClient(req, res) {
   }
 }
 
+async function httpGetRaisonsSociales(req, res) {
+  try {
+    const raisonsSociales = await getRaisonsSociales();
+    message =
+      raisonsSociales.length === 0
+        ? "Liste vide"
+        : "Raisons sociales récupérées.";
+    return res.status(200).json({ message, data: raisonsSociales });
+  } catch (err) {
+    return res.status(500).json({ message: serverIssue + err });
+  }
+}
+
+async function httpAddRaisonSociale(req, res) {}
+
 module.exports = {
   httpSearchClient,
   httpGetAllClients,
   httpGetClientTickets,
   httpDeleteClient,
   httpUpdateClient,
+  httpGetRaisonsSociales,
 };
