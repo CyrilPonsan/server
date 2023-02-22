@@ -1,26 +1,30 @@
 const {
   createNewIntervention,
-} = require("../models/ticket.model/createNewIntervention");
-const createTicket = require("../models/ticket.model/createTicket");
-const { getTicketDetails } = require("../models/ticket.model/getTicketDetails");
+} = require("../../models/ticket.model/createNewIntervention");
+const createTicket = require("../../models/ticket.model/createTicket");
+const getClientTicket = require("../../models/ticket.model/getClientTicket");
+const {
+  getTicketDetails,
+} = require("../../models/ticket.model/getTicketDetails");
 const {
   getTickets,
   getTotalTickets,
-} = require("../models/ticket.model/getTickets");
+} = require("../../models/ticket.model/getTickets");
 const {
   getTicketsStatutsList,
-} = require("../models/ticket.model/getTicketStatutsList");
-const { getPagination } = require("../services/queryService");
+} = require("../../models/ticket.model/getTicketStatutsList");
+const { getPagination } = require("../../services/queryService");
+const { testNewInterventionData } = require("../../services/ticketsService");
 const {
   regexNumber,
   badQuery,
   serverIssue,
   noData,
   regexGeneric,
-} = require("../utils/data");
+} = require("../../utils/data");
 
 async function httpGetTickets(req, res) {
-  const userId = req.session.userId;
+  const userId = req.auth.userId;
   const page = req.query.page;
   const limit = req.query.lmt;
 
@@ -80,7 +84,7 @@ async function httpGetTicketStatutsList(req, res) {
 
 async function httpCreateIntervention(req, res) {
   console.log(req.body);
-  const userId = req.session.userId;
+  const userId = req.auth.userId;
   const { titre, ticket_id, statut, lieuIntervention, description, reponse } =
     req.body.item;
 
@@ -101,7 +105,7 @@ async function httpCreateIntervention(req, res) {
     return res.status(400).json({ message: badQuery });
   }
 
-  if (+statut === 5 && !req.session.roles.includes("admin")) {
+  if (+statut === 5 && !req.auth.roles.includes("admin")) {
     return res.status(418).json({
       error: "Votre rôle ne vous permet pas d'effectuer cette opération.",
     });
@@ -145,10 +149,20 @@ async function httpCreateTicket(req, res) {
   }
 }
 
+async function httpGetClientTickets(req, res) {
+  try {
+    const tickets = await getClientTicket(2);
+    return res.status(200).json(tickets);
+  } catch (error) {
+    return res.status(500).json({ message: serverIssue + error });
+  }
+}
+
 module.exports = {
   httpGetTickets,
   httpGetTicketDetails,
   httpGetTicketStatutsList,
   httpCreateIntervention,
   httpCreateTicket,
+  httpGetClientTickets,
 };

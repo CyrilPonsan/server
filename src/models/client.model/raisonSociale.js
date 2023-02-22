@@ -5,6 +5,13 @@ async function getRaisonsSociales() {
 }
 
 async function addRaisonSociale(raisonSociale) {
+  const tmp = await RaisonSociale.findOne({
+    where: { raisonSociale: raisonSociale.raisonSociale },
+  });
+  console.log(tmp);
+  if (tmp) {
+    return false;
+  }
   const newRaisonSociale = await RaisonSociale.create(raisonSociale);
   if (newRaisonSociale) {
     return newRaisonSociale;

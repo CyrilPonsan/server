@@ -1,9 +1,9 @@
 const request = require("supertest");
-const app = require("../app");
+const app = require("../../app");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
-const { initDB } = require("../services/sequelize");
+const { initDB } = require("../../services/sequelize");
 
 let credentials = {
   username: "tech@atelier.eco",

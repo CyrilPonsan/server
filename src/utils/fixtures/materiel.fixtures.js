@@ -64,10 +64,10 @@ async function createParc() {
       parc.push({
         miseEnService: new Date(),
         url: url,
-        clientId: j,
-        typeMaterielId: matos[rng].type,
-        marqueId: matos[rng].marque,
-        modeleId: matos[rng].modele,
+        client_id: j,
+        typeMateriel_id: matos[rng].type,
+        marque_id: matos[rng].marque,
+        modele_id: matos[rng].modele,
         ref: ref,
       });
       ref++;

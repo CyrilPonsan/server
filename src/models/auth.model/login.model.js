@@ -9,6 +9,7 @@ async function login(username, password) {
   if (!user) {
     return false;
   }
+  console.log(username, password);
   const isValid = await bcrypt.compare(password, user.password);
   return {
     isValid,
@@ -21,4 +22,14 @@ async function login(username, password) {
   };
 }
 
-module.exports = { login };
+async function getConseillerById(userId) {
+  const user = await Conseiller.findByPk(userId);
+  if (user) {
+    return user;
+  }
+  return false;
+}
+
+module.exports = getConseillerById;
+
+module.exports = { login, getConseillerById };

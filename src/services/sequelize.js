@@ -34,6 +34,7 @@ if (process.env.NODE8ENV === "development") {
   console.log("prod environment");
   sequelize = new Sequelize(
     process.env.DB_NAME,
+
     process.env.DB_USERNAME,
     process.env.DB_PASSWORD,
     {
@@ -69,52 +70,70 @@ const TypeMateriel = TypeMaterielModel(sequelize, DataTypes);
  * une intervention ne peut être associée qu'à un
  * seul ticket
  */
-Ticket.hasMany(Intervention, { as: "intervention", onDelete: "CASCADE" });
-Intervention.belongsTo(Ticket, { as: "ticket" });
+Ticket.hasMany(Intervention, { as: "intervention", foreignKey: "ticket_id" });
+Intervention.belongsTo(Ticket, { foreignKey: "ticket_id", as: "ticket" });
 
 /**
  * relation ManyToOne entre materiel et ticket
  * un materiel peut avoir plusieurs tickets
  * un ticket n'est rattaché qu'à un seul materiel
  */
-Materiel.hasMany(Ticket, { as: "ticket", onDelete: "CASCADE" });
-Ticket.belongsTo(Materiel, { as: "materiel" });
+Materiel.hasMany(Ticket, { as: "ticket", foreignKey: "materiel_id" });
+Ticket.belongsTo(Materiel, { foreignKey: "materiel_id", as: "materiel" });
 
-Client.hasMany(Ticket, { as: "ticket", onDelete: "CASCADE" });
-Ticket.belongsTo(Client, { as: "client" });
+Client.hasMany(Ticket, { as: "ticket", foreignKey: "client_id" });
+Ticket.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 
 /**
  * relation ManyToOne entre client et materiel
  * un client peut avoir plusieurs materiel
  * un materiel n'est rattaché qu'à un seul client
  */
-Client.hasMany(Materiel, { as: "materiel", onDelete: "CASCADE" });
-Materiel.belongsTo(Client, { as: "client" });
+Client.hasMany(Materiel, { as: "materiel", foreignKey: "client_id" });
+Materiel.belongsTo(Client, { foreignKey: "client_id", as: "client" });
 
 /**
  * relation ManyToOne entre Conseiller et intervention
  * un Conseiller peut avoir plusieurs interventions
  * une intervention n'est rattaché qu'à un seul client
  */
-Conseiller.hasMany(Intervention, { as: "intervention" });
-Intervention.belongsTo(Conseiller, { as: "conseiller" });
+Conseiller.hasMany(Intervention, {
+  as: "intervention",
+  foreignKey: "conseiller_id",
+});
+Intervention.belongsTo(Conseiller, {
+  foreignKey: "conseiller_id",
+  as: "conseiller",
+});
 
 /**
  * relation OneToOne entre statut et intervention
  */
-Intervention.belongsTo(Statut, { as: "statut" });
+Intervention.belongsTo(Statut, { foreignKey: "statut_id", as: "statut" });
 
-RaisonSociale.hasMany(Client, { as: "client" });
-Client.belongsTo(RaisonSociale);
+RaisonSociale.hasMany(Client, {
+  as: "client",
+  foreignKey: "raison_sociale_id",
+});
+Client.belongsTo(RaisonSociale, {
+  foreignKey: "raison_sociale_id",
+  as: "raisonSociale",
+});
 
-TypeMateriel.hasMany(Materiel, { as: "materiel" });
-Materiel.belongsTo(TypeMateriel, { as: "typeMateriel" });
+TypeMateriel.hasMany(Materiel, {
+  as: "materiel",
+  foreignKey: "typeMateriel_id",
+});
+Materiel.belongsTo(TypeMateriel, {
+  as: "typeMateriel",
+  foreignKey: "typeMateriel_id",
+});
 
-Marque.hasMany(Materiel, { as: "materiel" });
-Materiel.belongsTo(Marque, { as: "marque" });
+Marque.hasMany(Materiel, { as: "materiel", foreignKey: "marque_id" });
+Materiel.belongsTo(Marque, { as: "marque", foreignKey: "marque_id" });
 
-Modele.hasMany(Materiel, { as: "materiel" });
-Materiel.belongsTo(Modele, { as: "modele" });
+Modele.hasMany(Materiel, { as: "materiel", foreignKey: "modele_id" });
+Materiel.belongsTo(Modele, { as: "modele", foreignKey: "modele_id" });
 
 //  initialisation de la bdd
 
