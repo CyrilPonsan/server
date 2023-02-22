@@ -6,14 +6,20 @@ const {
   httpGetClientTickets,
   httpDeleteClient,
   httpUpdateClient,
+  httpGetRaisonsScociales,
+  httpAddRaisonSociale,
+  httpCreateClient,
 } = require("../controllers/clients.controller");
 
 const clientsRouter = express.Router();
 
 clientsRouter.get("/", httpGetAllClients);
+clientsRouter.get("/raisons-sociales", httpGetRaisonsScociales);
 clientsRouter.put("/update/:id", httpUpdateClient);
 clientsRouter.get("/search", httpSearchClient);
 clientsRouter.get("/tickets/:id", httpGetClientTickets);
 clientsRouter.delete("/delete/:id", isAdmin, httpDeleteClient);
+clientsRouter.post("/raisons-sociales", httpAddRaisonSociale);
+clientsRouter.post("/", httpCreateClient);
 
 module.exports = clientsRouter;

@@ -9,7 +9,10 @@ const {
 } = require("../models/client.model/getClientDetails");
 const getClientTickets = require("../models/client.model/getClientTickets");
 const updateClient = require("../models/client.model/updateClient");
-const { checkUpdateClient } = require("../services/checkData");
+const {
+  checkUpdateClient,
+  checkCreateClient,
+} = require("../services/checkData");
 const { getPagination } = require("../services/queryService");
 const {
   regexGeneric,
@@ -18,6 +21,11 @@ const {
   serverIssue,
   noData,
 } = require("../utils/data");
+const {
+  getRaisonsSociales,
+  addRaisonSociale,
+} = require("../models/client.model/raisonSociale");
+const createClient = require("../models/client.model/createClient");
 
 async function httpGetAllClients(req, res) {
   const { page, lmt } = req.query;
@@ -49,6 +57,7 @@ async function httpSearchClient(req, res) {
     return res.status(400).json({ message: badQuery });
   }
   try {
+    console.log("hello", type, value);
     let clients;
     switch (type) {
       case "contrat":
@@ -58,12 +67,14 @@ async function httpSearchClient(req, res) {
         clients = await getClientByNom(value);
         break;
       default:
+        console.log("coucou");
         return res.status(400).json({ message: badQuery });
         break;
     }
     if (!clients) {
       return res.status(404).json({ message: noData });
     }
+    console.log(clients);
     return res.status(200).json(clients);
   } catch (err) {
     return res.status(500).json({ message: serverIssue + err });
@@ -123,10 +134,65 @@ async function httpUpdateClient(req, res) {
   }
 }
 
+async function httpCreateClient(req, res) {
+  console.log(req.body);
+  const clientToAdd = req.body.client;
+  const { raisonSocialeId } = req.body.raisonSociale;
+  if (checkCreateClient(clientToAdd)) {
+    return res.status(400).json({ message: badQuery });
+  }
+  try {
+    Object.assign(clientToAdd, { raisonSocialeId: raisonSocialeId });
+    const addedClient = await createClient(clientToAdd);
+    return res
+      .status(201)
+      .json({ message: "Client ajouté avec succès.", client: addedClient });
+  } catch (err) {
+    return res.status(500).json({ message: serverIssue + err });
+  }
+}
+
+async function httpGetRaisonsScociales(req, res) {
+  try {
+    const raisonsSociales = await getRaisonsSociales();
+    const message =
+      raisonsSociales.length === 0
+        ? "Liste vide"
+        : "Raisons sociales récupérées";
+    return res.status(200).json({ message, data: raisonsSociales });
+  } catch (err) {
+    return res.status(500).json({ message: serverIssue + err });
+  }
+}
+
+async function httpAddRaisonSociale(req, res) {
+  const { raisonSociale } = req.body;
+  if (!raisonSociale || !regexGeneric.test(raisonSociale)) {
+    return res.status(400).json({ message: badQuery });
+  }
+  try {
+    const newRaisonSociale = await addRaisonSociale(req.body);
+    if (!newRaisonSociale) {
+      return res
+        .status(418)
+        .json({ message: `Le nom ${raisonSociale} existe déjà.` });
+    }
+    return res.status(201).json({
+      message: "Raison sociale ajoutée avec succès.",
+      newRaisonSociale,
+    });
+  } catch (err) {
+    return res.status(500).json({ message: serverIssue + err });
+  }
+}
+
 module.exports = {
   httpSearchClient,
   httpGetAllClients,
   httpGetClientTickets,
   httpDeleteClient,
   httpUpdateClient,
+  httpGetRaisonsScociales,
+  httpAddRaisonSociale,
+  httpCreateClient,
 };

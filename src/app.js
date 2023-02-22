@@ -34,7 +34,7 @@ app.use(
     saveUninitialized: true,
     rolling: true,
     cookie: {
-      maxAge: 60 * 60 * 1000,
+      maxAge: 10 * 1000,
       secure: false,
       sameSite: "lax",
     },

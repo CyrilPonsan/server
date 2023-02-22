@@ -5,6 +5,7 @@ function raisonSocialeModel(sequelize, DataTypes) {
       raisonSociale: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
     },
     { timestamps: false }
