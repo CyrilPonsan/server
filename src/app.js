@@ -3,7 +3,6 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const session = require("express-session");
-const Sequelize = require("sequelize");
 const { initDB } = require("./services/sequelize");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const { sequelize } = require("./services/sequelize");
@@ -30,11 +29,12 @@ app.use(express.static(path.join(__dirname, "..", "public")));
 
 app.use(
   session({
-    secret: "SECRET_1",
-    resave: false,
-    saveUninitialized: false,
+    secret: SECRET_1,
+    resave: true,
+    saveUninitialized: true,
+    rolling: true,
     cookie: {
-      maxAge: 60 * 60 * 1000,
+      maxAge: 10 * 1000,
       secure: false,
       sameSite: "lax",
     },

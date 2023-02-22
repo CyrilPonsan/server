@@ -1,6 +1,6 @@
 const { regexMail, regexGeneric } = require("../utils/data");
 
-function checkUpdateClient(data) {
+function checkUpdateCreateClient(data) {
   const { nom, email, contrat, telephone, adresse, codePostal, ville } = data;
   return (
     !nom ||
@@ -20,4 +20,4 @@ function checkUpdateClient(data) {
   );
 }
 
-module.exports = { checkUpdateClient };
+module.exports = { checkUpdateCreateClient };

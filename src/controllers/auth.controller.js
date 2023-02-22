@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const { login } = require("../models/auth.model/login.model");
+const getConseillerById = require("../models/conseiller.model/getConseillerById");
 const {
   regexMail,
   regexPassword,
@@ -58,45 +59,25 @@ function httpLogout(req, res) {
   return res.status(200).json({ message: "logged out" });
 }
 
-//  retourne des tokens tout neufs
-function httpGenerateNewTokens(req, res) {
-  const refreshToken = req.body.refreshToken;
-  if (!refreshToken) {
-    return res.status(403).json({ noAccess });
-  }
+async function httpHandShake(req, res) {
   try {
-    const decodedToken = jwt.verify(refreshToken, process.env.PRIVATE_KEY);
-    if (
-      decodedToken.roles.includes("tech") ||
-      decodedToken.roles.includes("admin")
-    ) {
-      const user = {
-        id: decodedToken.id,
-        roles: decodedToken.roles,
-      };
-      console.log("user", user);
+    const user = await getConseillerById(req.session.userId);
+    if (user.roles.includes("tech") || user.roles.includes("admin")) {
       return res.status(200).json({
-        accessToken: _getToken(user, accessTimeLife),
-        refreshToken: _getToken(user, refreshTimeLife),
+        user: {
+          username: user.username,
+          id: user.id,
+          nom: user.nom,
+          prenom: user.prenom,
+          roles: user.roles,
+          createdAt: user.createdAt,
+        },
       });
-    } else {
-      return res.status(403).json({ message: noAccess });
     }
-  } catch (err) {
-    res.status(403).json({ message: serverIssue + err });
+    return res.status(403).json({ message: noAccess });
+  } catch (error) {
+    return res.status(500).json({ error: serverIssue + error });
   }
 }
 
-//  génère un token d'accès ou de refresh
-const _getToken = (user, timeLife) => {
-  return jwt.sign(
-    {
-      id: user.id,
-      roles: user.roles,
-    },
-    process.env.PRIVATE_KEY,
-    { expiresIn: timeLife }
-  );
-};
-
-module.exports = { httpLogin, httpLogout };
+module.exports = { httpHandShake, httpLogin, httpLogout };
