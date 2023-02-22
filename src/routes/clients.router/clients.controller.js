@@ -1,31 +1,28 @@
-const deleteClient = require("../models/client.model/deleteClient");
+const deleteClient = require("../../models/client.model/deleteClient");
 const {
   getAllClients,
   getTotalClients,
-} = require("../models/client.model/getAllClients");
+} = require("../../models/client.model/getAllClients");
 const {
   getClientByContrat,
   getClientByNom,
-} = require("../models/client.model/getClientDetails");
-const getClientTickets = require("../models/client.model/getClientTickets");
-const updateClient = require("../models/client.model/updateClient");
-const {
-  checkUpdateClient,
-  checkCreateClient,
-} = require("../services/checkData");
-const { getPagination } = require("../services/queryService");
+} = require("../../models/client.model/getClientDetails");
+const getClientTickets = require("../../models/client.model/getClientTickets");
+const updateClient = require("../../models/client.model/updateClient");
+const { checkClient } = require("../../services/checkData");
+const { getPagination } = require("../../services/queryService");
 const {
   regexGeneric,
   regexNumber,
   badQuery,
   serverIssue,
   noData,
-} = require("../utils/data");
+} = require("../../utils/data");
 const {
   getRaisonsSociales,
   addRaisonSociale,
-} = require("../models/client.model/raisonSociale");
-const createClient = require("../models/client.model/createClient");
+} = require("../../models/client.model/raisonSociale");
+const createClient = require("../../models/client.model/createClient");
 
 async function httpGetAllClients(req, res) {
   const { page, lmt } = req.query;
@@ -115,11 +112,7 @@ async function httpDeleteClient(req, res) {
 async function httpUpdateClient(req, res) {
   const clientId = req.params.id;
   const clientToUpdate = req.body;
-  if (
-    checkUpdateClient(clientToUpdate) ||
-    !clientId ||
-    !regexNumber.test(clientId)
-  ) {
+  if (checkClient(clientToUpdate) || !clientId || !regexNumber.test(clientId)) {
     return res.status(400).json({ message: badQuery });
   }
   try {
@@ -135,18 +128,21 @@ async function httpUpdateClient(req, res) {
 }
 
 async function httpCreateClient(req, res) {
-  console.log(req.body);
+  console.log("toto", req.body);
   const clientToAdd = req.body.client;
-  const { raisonSocialeId } = req.body.raisonSociale;
-  if (checkCreateClient(clientToAdd)) {
+  const raisonSocialeId = clientToAdd.raisonSocialeId;
+  if (checkClient(clientToAdd)) {
+    return res.status(400).json({ message: badQuery });
+  }
+  if (!raisonSocialeId || !regexNumber.test(raisonSocialeId)) {
     return res.status(400).json({ message: badQuery });
   }
   try {
-    Object.assign(clientToAdd, { raisonSocialeId: raisonSocialeId });
+    clientToAdd.raisonSocialeId = parseInt(raisonSocialeId);
     const addedClient = await createClient(clientToAdd);
     return res
       .status(201)
-      .json({ message: "Client ajouté avec succès.", client: addedClient });
+      .json({ message: "Client ajouté avec succès.", data: addedClient });
   } catch (err) {
     return res.status(500).json({ message: serverIssue + err });
   }
