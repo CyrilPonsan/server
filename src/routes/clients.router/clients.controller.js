@@ -128,9 +128,9 @@ async function httpUpdateClient(req, res) {
 }
 
 async function httpCreateClient(req, res) {
-  console.log("toto", req.body);
   const clientToAdd = req.body.client;
   const raisonSocialeId = clientToAdd.raisonSocialeId;
+  console.log(clientToAdd);
   if (checkClient(clientToAdd)) {
     return res.status(400).json({ message: badQuery });
   }

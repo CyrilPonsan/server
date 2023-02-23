@@ -1,4 +1,4 @@
-const { regexMail, regexGeneric } = require("../utils/data");
+const { regexMail, regexGeneric, regexNumber } = require("../utils/data");
 
 function checkClient(data) {
   const { nom, email, contrat, telephone, adresse, codePostal, ville } = data;
@@ -20,4 +20,21 @@ function checkClient(data) {
   );
 }
 
-module.exports = { checkClient };
+function checkMateriel(data) {
+  const { miseEnService, ref, clientId, typeMaterielId, marqueId, modeleId } =
+    data;
+
+  return (
+    !miseEnService ||
+    !regexGeneric.test(miseEnService) ||
+    (ref && !regexNumber.test(ref)) ||
+    !typeMaterielId ||
+    !regexNumber.test(typeMaterielId) ||
+    !marqueId ||
+    !regexNumber.test(marqueId) ||
+    !modeleId ||
+    !regexNumber.test(modeleId)
+  );
+}
+
+module.exports = { checkClient, checkMateriel };
