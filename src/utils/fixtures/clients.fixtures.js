@@ -29,7 +29,7 @@ async function createClients() {
       adresse: `${i + 1} rue Xavier Pinson`,
       codePostal: "64000",
       ville: "San Francisco sur Adour",
-      raison_sociale_id: _setRandomNumber(1, 2),
+      raisonSocialeId: _setRandomNumber(1, 2),
     };
     console.log(client.nom);
     clients.push(client);
