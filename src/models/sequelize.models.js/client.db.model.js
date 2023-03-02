@@ -11,6 +11,7 @@ function clientModel(sequelize, DataTypes) {
     contrat: {
       type: DataTypes.STRING,
       allownull: false,
+      unique: true,
     },
     telephone: {
       type: DataTypes.STRING,

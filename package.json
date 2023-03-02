@@ -4,10 +4,10 @@
   "description": "API pour l'application d'atelier",
   "main": "src/server.js",
   "scripts": {
-    "start": "NODE_ENV=production node src/server.js",
+    "start": "node src/server.js",
     "test": "jest",
     "test-watch": "jest --watch",
-    "watch": "NODE_ENV=development nodemon src/server.js",
+    "watch": "nodemon src/server.js",
     "prod": "env-cmd -f ./env.env.prod",
     "cluster": "NODE_ENV=production pm2 start src/app.js -i max",
     "deploy-cluster": "npm run build --prefix client && npm run cluster --prefix server"
@@ -27,6 +27,7 @@
     "morgan": "^1.10.0",
     "mysql2": "^3.1.0",
     "nodemailer": "^6.9.1",
+    "openai": "^3.2.0",
     "save": "^2.9.0",
     "sequelize": "^6.28.0",
     "swagger-ui-express": "^4.6.1"

@@ -1,5 +1,6 @@
 const createMateriel = require("../../models/materiel.model.js/createMateriel");
 const deleteMateriel = require("../../models/materiel.model.js/deleteMateriel");
+const getClientMateriels = require("../../models/materiel.model.js/getClientMateriels");
 const getOneMateriel = require("../../models/materiel.model.js/getOneMateriel");
 const updateMateriel = require("../../models/materiel.model.js/updateMateriel");
 const { checkMateriel } = require("../../services/checkData");
@@ -84,9 +85,26 @@ async function httpUpdateMateriel(req, res) {
   }
 }
 
+async function httpGetClientMateriels(req, res) {
+  const clientId = req.params.id;
+  if (!clientId || !regexNumber.test(clientId)) {
+    return res.status(403).json({ message: badQuery });
+  }
+  try {
+    const clientMateriels = await getClientMateriels(clientId);
+    if (!clientMateriels) {
+      return res.status(404).json({ message: noData });
+    }
+    return res.status(200).json(clientMateriels);
+  } catch (error) {
+    return res.status(500).json({ message: serverIssue + error });
+  }
+}
+
 module.exports = {
   httpGetOneMateriel,
   httpDeleteMateriel,
   httpCreateMateriel,
   httpUpdateMateriel,
+  httpGetClientMateriels,
 };

@@ -23,6 +23,8 @@ const {
   addRaisonSociale,
 } = require("../../models/client.model/raisonSociale");
 const createClient = require("../../models/client.model/createClient");
+const getClientMateriels = require("../../models/client.model/getClientMateriels");
+const { countMateriels } = require("../../services/countMateriels");
 
 async function httpGetAllClients(req, res) {
   const { page, lmt } = req.query;
@@ -58,7 +60,7 @@ async function httpSearchClient(req, res) {
     let clients;
     switch (type) {
       case "contrat":
-        clients = await getClientByContrat(+value);
+        clients = await getClientByContrat(value);
         break;
       case "nom":
         clients = await getClientByNom(value);
@@ -88,7 +90,16 @@ async function httpGetClientTickets(req, res) {
     if (!tickets) {
       return res.status(404).json({ message: noData });
     }
-    return res.status(200).json(tickets);
+    const result = tickets.map((item) => ({
+      id: item.id,
+      resume: item.resume,
+      titre: item.titre,
+      ref: item.ref,
+      date: item.intervention[0].date,
+      statut: item.intervention[0].statut.label,
+      typeMateriel: item.materiel.typeMateriel.type,
+    }));
+    return res.status(200).json(result);
   } catch (err) {
     return res.status(500).json({ message: serverIssue + err });
   }
@@ -111,17 +122,19 @@ async function httpDeleteClient(req, res) {
 
 async function httpUpdateClient(req, res) {
   const clientId = req.params.id;
-  const clientToUpdate = req.body;
+  const clientToUpdate = req.body.client;
+  console.log(req.body);
   if (checkClient(clientToUpdate) || !clientId || !regexNumber.test(clientId)) {
     return res.status(400).json({ message: badQuery });
   }
   try {
     const updatedClient = await updateClient(clientId, clientToUpdate);
-    if (updatedClient) {
-      return res.status(201).json({
-        message: `Le client avec l'identifiant: ${clientId} a été mis à jour avec succès.`,
-      });
+    if (!updatedClient) {
+      return res.status(404).json({ message: noData });
     }
+    return res.status(201).json({
+      message: `Le client avec l'identifiant: ${clientId} a été mis à jour avec succès.`,
+    });
   } catch (err) {
     return res.status(500).json({ message: serverIssue + err });
   }
@@ -182,6 +195,22 @@ async function httpAddRaisonSociale(req, res) {
   }
 }
 
+async function httpGetClientMateriels(req, res) {
+  const clientId = req.params.clientId;
+  if (!clientId || isNaN(clientId)) {
+    return res.status(403).json({ message: badQuery });
+  }
+  try {
+    const materiels = await getClientMateriels(+clientId);
+    if (!materiels) {
+      return res.status(404).json({ message: noData });
+    }
+    return res.status(200).json(countMateriels(materiels));
+  } catch (err) {
+    return res.status(500).json({ message: serverIssue + err });
+  }
+}
+
 module.exports = {
   httpSearchClient,
   httpGetAllClients,
@@ -191,4 +220,5 @@ module.exports = {
   httpGetRaisonsScociales,
   httpAddRaisonSociale,
   httpCreateClient,
+  httpGetClientMateriels,
 };

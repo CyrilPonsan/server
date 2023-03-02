@@ -12,7 +12,7 @@ exports.regexPassword =
 exports.regexFacteurPassword =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{10,})/;
 exports.regexNumber = /^[0-9]*$/;
-exports.regexGeneric = /^[a-zA-Z0-9\s,.':\-+éàèâôêûù]{0,}$/;
+exports.regexGeneric = /^[a-zA-Z0-9\s,.':\-+éàèâô_°êûù]{0,}$/;
 
 exports._setRandomNumber = (min, max) => {
   return Math.trunc(Math.random() * (max - min + 1) + min);
