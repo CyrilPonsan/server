@@ -4,6 +4,7 @@ const getClientMateriels = require("../../models/materiel.model.js/getClientMate
 const getOneMateriel = require("../../models/materiel.model.js/getOneMateriel");
 const updateMateriel = require("../../models/materiel.model.js/updateMateriel");
 const { checkMateriel } = require("../../services/checkData");
+const { getPagination } = require("../../services/queryService");
 const {
   regexNumber,
   badQuery,
@@ -86,12 +87,23 @@ async function httpUpdateMateriel(req, res) {
 }
 
 async function httpGetClientMateriels(req, res) {
-  const clientId = req.params.id;
-  if (!clientId || !regexNumber.test(clientId)) {
+  const { page, limite, id } = req.query;
+  if (
+    !id ||
+    !regexNumber.test(id) ||
+    !page ||
+    !regexNumber.test(page) ||
+    !limite ||
+    !regexNumber.test(limite)
+  ) {
     return res.status(403).json({ message: badQuery });
   }
   try {
-    const clientMateriels = await getClientMateriels(clientId);
+    const clientMateriels = await getClientMateriels(
+      id,
+      getPagination(+page, +limite),
+      +limite
+    );
     if (!clientMateriels) {
       return res.status(404).json({ message: noData });
     }
