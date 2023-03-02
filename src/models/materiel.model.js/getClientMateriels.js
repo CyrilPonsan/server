@@ -1,7 +1,12 @@
-const { TypeMateriel, Marque } = require("../../services/sequelize");
+const {
+  TypeMateriel,
+  Marque,
+  Materiel,
+  Modele,
+} = require("../../services/sequelize");
 
 async function getClientMateriels(clientId) {
-  const materiels = await materiels.findAll({
+  const materiels = await Materiel.findAll({
     where: { clientId: clientId },
     include: [
       { model: TypeMateriel, as: "typeMateriel" },
