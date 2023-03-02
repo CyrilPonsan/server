@@ -11,7 +11,7 @@ const api = express.Router();
 api.use("/auth", authRouter);
 api.use("/clients", clientsRouter);
 api.use("/tickets", ticketsRouter);
-api.use("/materiel", materielRouter);
+api.use("/materiel", hasAccess, materielRouter);
 api.use("/knowledge", knowledgeRouter);
 
 module.exports = api;
