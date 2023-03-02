@@ -2,6 +2,7 @@ const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
+const helmet = require("helmet");
 
 const { initDB } = require("./services/sequelize");
 const api = require("./routes/v1.router");
@@ -11,6 +12,7 @@ const app = express();
 //  initialise la bdd
 initDB();
 
+app.use(helmet());
 app.use(cors());
 app.use(morgan("combined"));
 app.use(express.json());
