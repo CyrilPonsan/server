@@ -63,7 +63,7 @@ function httpLogout(req, res) {
 
 async function httpHandShake(req, res) {
   try {
-    const user = await getConseillerById(req.auth.userId);
+    const user = await getConseillerById(req.session.userId);
     if (user.roles.includes("tech") || user.roles.includes("admin")) {
       return res.status(200).json({
         user: {

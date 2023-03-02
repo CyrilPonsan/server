@@ -24,7 +24,7 @@ const {
 } = require("../../utils/data");
 
 async function httpGetTickets(req, res) {
-  const userId = req.auth.userId;
+  const userId = req.session.userId;
   const page = req.query.page;
   const limit = req.query.lmt;
 
@@ -84,12 +84,12 @@ async function httpGetTicketStatutsList(req, res) {
 
 async function httpCreateIntervention(req, res) {
   console.log(req.body);
-  const userId = req.auth.userId;
-  const { titre, ticket_id, statut, lieuIntervention, description, reponse } =
+  const userId = req.session.userId;
+  const { titre, ticketId, statut, lieuIntervention, description, reponse } =
     req.body.item;
 
   console.log(req.body.item);
-  console.log(titre, ticket_id, statut, description, reponse);
+  console.log(titre, ticketId, statut, description, reponse);
   if (
     !titre ||
     !regexGeneric.test(titre) ||
@@ -100,7 +100,9 @@ async function httpCreateIntervention(req, res) {
     !reponse ||
     !regexGeneric.test(reponse) ||
     !lieuIntervention ||
-    !regexGeneric.test(lieuIntervention)
+    !regexGeneric.test(lieuIntervention) ||
+    !ticketId ||
+    !regexNumber.test(ticketId)
   ) {
     return res.status(400).json({ message: badQuery });
   }

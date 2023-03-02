@@ -36,9 +36,10 @@ app.use(
     saveUninitialized: true,
     rolling: true,
     cookie: {
-      maxAge: 10 * 1000,
+      maxAge: 20 * 60 * 1000,
       secure: false,
       sameSite: "lax",
+      httpOnly: true,
     },
     store: new SequelizeStore({ db: sequelize }),
   })

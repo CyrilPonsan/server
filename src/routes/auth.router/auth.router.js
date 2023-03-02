@@ -1,11 +1,7 @@
 const express = require("express");
 const { hasAccess } = require("../../middlewares/auth.middleware");
 
-const {
-  httpLogin,
-  httpGenerateNewTokens,
-  httpHandShake,
-} = require("./auth.controller");
+const { httpLogin, httpLogout, httpHandShake } = require("./auth.controller");
 
 const authRouter = express.Router();
 
@@ -15,5 +11,6 @@ authRouter.post("/", httpLogin);
 //  rafraîchissement des tokens
 //authRouter.post("/refresh-tokens", httpGenerateNewTokens);
 authRouter.get("/handshake", hasAccess, httpHandShake);
+authRouter.get("/logout", httpLogout);
 
 module.exports = authRouter;

@@ -8,8 +8,8 @@ async function createNewIntervention(userId, intervention) {
 
   intervention = Object.assign(intervention, {
     date: new Date(),
-    conseiller_id: userId,
-    statut_id: statut.id,
+    conseillerId: userId,
+    statutId: statut.id,
   });
   const newIntervention = await Intervention.create(intervention);
   if (!newIntervention) {
