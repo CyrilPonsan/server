@@ -13,7 +13,7 @@ const authRouter = express.Router();
 authRouter.post("/", httpLogin);
 
 //  rafraîchissement des tokens
-authRouter.post("/refresh-tokens", httpGenerateNewTokens);
+//authRouter.post("/refresh-tokens", httpGenerateNewTokens);
 authRouter.get("/handshake", hasAccess, httpHandShake);
 
 module.exports = authRouter;
